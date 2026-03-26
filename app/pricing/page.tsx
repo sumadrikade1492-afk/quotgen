@@ -1,0 +1,21 @@
+import { Header } from "@/components/header"
+import { Footer } from "@/components/footer"
+import { PricingHero } from "@/components/pricing/pricing-hero"
+import { ServiceTabs } from "@/components/pricing/service-tabs"
+import { PricingPackages } from "@/components/pricing/pricing-packages"
+import { ServiceConfigurators } from "@/components/pricing/service-configurators"
+
+export default function PricingPage() {
+  return (
+    <main className="min-h-screen bg-background">
+      <Header />
+      <div className="pt-16">
+        <PricingHero />
+        <ServiceTabs />
+        <PricingPackages />
+        <ServiceConfigurators />
+      </div>
+      <Footer />
+    </main>
+  )
+}
