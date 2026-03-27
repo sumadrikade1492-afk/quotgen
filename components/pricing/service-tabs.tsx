@@ -17,7 +17,7 @@ import {
 } from "lucide-react"
 
 const services = [
-  { id: "posts", label: "Posts", icon: ImageIcon, link: "/" },
+  { id: "posts", label: "Posts", icon: ImageIcon, link: "/services/posts" },
   { id: "videos", label: "Videos", icon: Video, link: "/videos" },
   { id: "static-ads", label: "Static Ads", icon: LayoutGrid, link: "/static-ads" },
   { id: "video-ads", label: "Video Ads", icon: Film, link: "/video-ads" },
