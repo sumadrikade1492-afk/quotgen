@@ -1,16 +1,16 @@
-'use client'
+"use client"
 
-import { useState } from 'react'
-import Link from 'next/link'
-import { Header } from '@/components/header'
-import { Footer } from '@/components/footer'
-import { Button } from '@/components/ui/button'
+import type React from "react"
+import { useState } from "react"
+import Link from "next/link"
+import { Button } from "@/components/ui/button"
 import {
   ArrowRight,
   ImageIcon,
   Video,
   LayoutGrid,
   Film,
+  Instagram,
   Mail,
   Target,
   Search,
@@ -19,7 +19,7 @@ import {
   Link2,
   Info,
   ChevronDown,
-} from 'lucide-react'
+} from "lucide-react"
 
 interface ServiceCardConfig {
   id: string
@@ -29,11 +29,12 @@ interface ServiceCardConfig {
   badge: string
   badgeColor: string
   basePrice: number
-  quantityOptions: { quantity: number; price: number; label?: string }[]
+  quantityOptions: { quantity: number; price: number }[]
   link: string
+  category: string
 }
 
-const allServices: ServiceCardConfig[] = [
+const serviceCardsData: ServiceCardConfig[] = [
   {
     id: "social-media-posts",
     title: "Social Media Posts",
@@ -43,12 +44,13 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-blue-100 text-blue-700",
     basePrice: 99,
     quantityOptions: [
-      { quantity: 5, price: 99, label: "5 posts" },
-      { quantity: 10, price: 149, label: "10 posts" },
-      { quantity: 15, price: 199, label: "15 posts" },
-      { quantity: 30, price: 329, label: "30 posts" },
+      { quantity: 5, price: 99 },
+      { quantity: 10, price: 149 },
+      { quantity: 15, price: 199 },
+      { quantity: 30, price: 329 },
     ],
     link: "/services/posts",
+    category: "posts",
   },
   {
     id: "short-form-videos",
@@ -59,12 +61,13 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-blue-100 text-blue-700",
     basePrice: 199,
     quantityOptions: [
-      { quantity: 5, price: 199, label: "5 videos" },
-      { quantity: 10, price: 349, label: "10 videos" },
-      { quantity: 15, price: 499, label: "15 videos" },
-      { quantity: 20, price: 649, label: "20 videos" },
+      { quantity: 5, price: 199 },
+      { quantity: 10, price: 349 },
+      { quantity: 15, price: 499 },
+      { quantity: 20, price: 649 },
     ],
     link: "/videos",
+    category: "videos",
   },
   {
     id: "blog-post",
@@ -75,12 +78,13 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-emerald-100 text-emerald-700",
     basePrice: 99,
     quantityOptions: [
-      { quantity: 2, price: 99, label: "2 Blog Posts" },
-      { quantity: 4, price: 179, label: "4 Blog Posts" },
-      { quantity: 6, price: 249, label: "6 Blog Posts" },
-      { quantity: 8, price: 319, label: "8 Blog Posts" },
+      { quantity: 2, price: 99 },
+      { quantity: 4, price: 179 },
+      { quantity: 6, price: 249 },
+      { quantity: 8, price: 319 },
     ],
     link: "/services/blogs",
+    category: "blogs",
   },
   {
     id: "email-design",
@@ -91,12 +95,13 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-purple-100 text-purple-700",
     basePrice: 149,
     quantityOptions: [
-      { quantity: 2, price: 149, label: "2 emails" },
-      { quantity: 4, price: 279, label: "4 emails" },
-      { quantity: 6, price: 399, label: "6 emails" },
-      { quantity: 8, price: 519, label: "8 emails" },
+      { quantity: 2, price: 149 },
+      { quantity: 4, price: 279 },
+      { quantity: 6, price: 399 },
+      { quantity: 8, price: 519 },
     ],
     link: "/services/emails",
+    category: "emails",
   },
   {
     id: "seo-backlinks",
@@ -107,12 +112,13 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-emerald-100 text-emerald-700",
     basePrice: 249,
     quantityOptions: [
-      { quantity: 3, price: 249, label: "3 backlinks" },
-      { quantity: 6, price: 449, label: "6 backlinks" },
-      { quantity: 9, price: 629, label: "9 backlinks" },
-      { quantity: 12, price: 799, label: "12 backlinks" },
+      { quantity: 3, price: 249 },
+      { quantity: 6, price: 449 },
+      { quantity: 9, price: 629 },
+      { quantity: 12, price: 799 },
     ],
     link: "/services/backlinks",
+    category: "backlinks",
   },
   {
     id: "instagram-growth",
@@ -123,11 +129,12 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-blue-100 text-blue-700",
     basePrice: 149,
     quantityOptions: [
-      { quantity: 1, price: 149, label: "1 month" },
-      { quantity: 2, price: 279, label: "2 months" },
-      { quantity: 3, price: 399, label: "3 months" },
+      { quantity: 1, price: 149 },
+      { quantity: 2, price: 279 },
+      { quantity: 3, price: 399 },
     ],
     link: "/services/instagram-growth",
+    category: "instagram-growth",
   },
   {
     id: "meta-ads",
@@ -138,11 +145,12 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-orange-100 text-orange-700",
     basePrice: 499,
     quantityOptions: [
-      { quantity: 1, price: 499, label: "1 account" },
-      { quantity: 2, price: 899, label: "2 accounts" },
-      { quantity: 3, price: 1249, label: "3 accounts" },
+      { quantity: 1, price: 499 },
+      { quantity: 2, price: 899 },
+      { quantity: 3, price: 1249 },
     ],
     link: "/services/meta-ads",
+    category: "meta-ads",
   },
   {
     id: "google-ads",
@@ -153,11 +161,12 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-orange-100 text-orange-700",
     basePrice: 499,
     quantityOptions: [
-      { quantity: 1, price: 499, label: "1 account" },
-      { quantity: 2, price: 899, label: "2 accounts" },
-      { quantity: 3, price: 1249, label: "3 accounts" },
+      { quantity: 1, price: 499 },
+      { quantity: 2, price: 899 },
+      { quantity: 3, price: 1249 },
     ],
     link: "/services/google-ads",
+    category: "google-ads",
   },
   {
     id: "managed-seo",
@@ -168,11 +177,12 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-emerald-100 text-emerald-700",
     basePrice: 499,
     quantityOptions: [
-      { quantity: 1, price: 499, label: "Starter" },
-      { quantity: 2, price: 899, label: "Growth" },
-      { quantity: 3, price: 1249, label: "Enterprise" },
+      { quantity: 1, price: 499 },
+      { quantity: 2, price: 899 },
+      { quantity: 3, price: 1249 },
     ],
     link: "/services/managed-seo",
+    category: "backlinks",
   },
   {
     id: "static-ads",
@@ -183,12 +193,13 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-pink-100 text-pink-700",
     basePrice: 99,
     quantityOptions: [
-      { quantity: 5, price: 99, label: "5 static ads" },
-      { quantity: 10, price: 179, label: "10 static ads" },
-      { quantity: 20, price: 329, label: "20 static ads" },
-      { quantity: 30, price: 469, label: "30 static ads" },
+      { quantity: 5, price: 99 },
+      { quantity: 10, price: 179 },
+      { quantity: 20, price: 329 },
+      { quantity: 30, price: 469 },
     ],
     link: "/services/static-ads",
+    category: "static-ads",
   },
   {
     id: "video-ads",
@@ -199,12 +210,13 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-pink-100 text-pink-700",
     basePrice: 99,
     quantityOptions: [
-      { quantity: 2, price: 99, label: "2 video ads" },
-      { quantity: 4, price: 179, label: "4 video ads" },
-      { quantity: 6, price: 249, label: "6 video ads" },
-      { quantity: 8, price: 319, label: "8 video ads" },
+      { quantity: 2, price: 99 },
+      { quantity: 4, price: 179 },
+      { quantity: 6, price: 249 },
+      { quantity: 8, price: 319 },
     ],
     link: "/video-ads",
+    category: "video-ads",
   },
   {
     id: "ugc-videos",
@@ -215,11 +227,12 @@ const allServices: ServiceCardConfig[] = [
     badgeColor: "bg-pink-100 text-pink-700",
     basePrice: 599,
     quantityOptions: [
-      { quantity: 3, price: 599, label: "3 UGC Videos" },
-      { quantity: 6, price: 1099, label: "6 UGC Videos" },
-      { quantity: 9, price: 1549, label: "9 UGC Videos" },
+      { quantity: 3, price: 599 },
+      { quantity: 6, price: 1099 },
+      { quantity: 9, price: 1549 },
     ],
     link: "/services/ugc-videos",
+    category: "videos",
   },
 ]
 
@@ -259,7 +272,7 @@ function ServiceCard({ config }: { config: ServiceCardConfig }) {
         >
           {config.quantityOptions.map((option, idx) => (
             <option key={idx} value={idx}>
-              {option.label} - ${option.price}/mo
+              {option.quantity} {config.title.toLowerCase().includes("video") ? "videos" : config.title.toLowerCase().includes("post") ? "posts" : config.title.toLowerCase().includes("backlink") ? "backlinks" : config.title.toLowerCase().includes("email") ? "emails" : config.title.toLowerCase().includes("blog") ? "Blog Posts" : "units"} - ${option.price}/mo
             </option>
           ))}
         </select>
@@ -286,35 +299,28 @@ function ServiceCard({ config }: { config: ServiceCardConfig }) {
   )
 }
 
-export default function ServicesPage() {
+interface ServiceCardsGridProps {
+  activeTab?: string
+}
+
+export function ServiceCardsGrid({ activeTab = "posts" }: ServiceCardsGridProps) {
+  const filteredCards = serviceCardsData.filter(card => card.category === activeTab)
+
   return (
-    <main className="min-h-screen bg-gray-50">
-      <Header />
-
-      {/* Hero Section */}
-      <section className="pt-32 pb-8 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold text-gray-900 mb-3">
-            All Services
-          </h1>
-          <p className="text-sm text-gray-500 max-w-2xl mx-auto leading-relaxed">
-            Get your creative & marketing work done without the hassle of unreliable freelancers, costly agencies. Pay a fixed, monthly, and predictable rate, with no contracts or surprises.
-          </p>
-        </div>
-      </section>
-
-      {/* Services Grid */}
-      <section className="py-8 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-6xl mx-auto">
+    <section className="py-12 px-4 sm:px-6 lg:px-8 bg-white">
+      <div className="max-w-6xl mx-auto">
+        {filteredCards.length > 0 ? (
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-            {allServices.map((config) => (
+            {filteredCards.map((config) => (
               <ServiceCard key={config.id} config={config} />
             ))}
           </div>
-        </div>
-      </section>
-
-      <Footer />
-    </main>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-gray-500 text-lg">Coming soon! We&apos;re working on adding more services in this category.</p>
+          </div>
+        )}
+      </div>
+    </section>
   )
 }
