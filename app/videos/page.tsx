@@ -14,7 +14,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
-import { ArrowRight, Video, Users, Info } from 'lucide-react'
+import { ArrowRight, Video, Users, Film, Info } from 'lucide-react'
 
 const services = [
   {
@@ -31,6 +31,21 @@ const services = [
       { label: '20 videos', price: 649 },
     ],
     href: '/services/videos/short-form-videos',
+  },
+  {
+    id: 'video-ads',
+    title: 'Video Ads',
+    description: 'High-performing video ads for paid social. Research, scripting, editing, copywriting. Using client-provided footage, premium stock, UGC-style, or AI assets.',
+    icon: Film,
+    category: 'PAID SOCIAL',
+    basePrice: 99,
+    options: [
+      { label: '1 video', price: 99 },
+      { label: '2 videos', price: 179 },
+      { label: '3 videos', price: 249 },
+      { label: '5 videos', price: 399 },
+    ],
+    href: '/video-ads',
   },
   {
     id: 'ugc',
@@ -51,6 +66,7 @@ const services = [
 export default function ShortFormVideosPage() {
   const [selectedOptions, setSelectedOptions] = useState<Record<string, number>>({
     'short-form': 0,
+    'video-ads': 0,
     'ugc': 0,
   })
 
@@ -62,11 +78,11 @@ export default function ShortFormVideosPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background">
+    <main className="min-h-screen bg-white">
       <Header />
 
       {/* Breadcrumb */}
-      <nav className="pt-32 px-4 sm:px-6 lg:px-8 bg-[#F5F9FF]">
+      <nav className="pt-32 px-4 sm:px-6 lg:px-8 bg-[#F8F9FB]">
         <div className="max-w-7xl mx-auto mb-8">
           <Breadcrumb
             items={[
@@ -82,21 +98,21 @@ export default function ShortFormVideosPage() {
       <ServiceTabs />
 
       {/* Hero Section */}
-      <section className="pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#F5F9FF] to-white">
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-[#F8F9FB]">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
+          <h1 className="text-2xl sm:text-3xl font-bold text-[#1a1a2e] mb-3">
             Short-Form Videos
           </h1>
-          <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
+          <p className="text-[#6b7280] max-w-2xl mx-auto text-sm leading-relaxed">
             Get your creative &amp; marketing work done without the hassle of unreliable freelancers, costly agencies. Pay a fixed, monthly, and predictable rate, with no contracts or surprises.
           </p>
         </div>
       </section>
 
       {/* Services Grid */}
-      <section className="py-12 px-4 sm:px-6 lg:px-8">
+      <section className="py-10 px-4 sm:px-6 lg:px-8 bg-[#F8F9FB]">
         <div className="max-w-5xl mx-auto">
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
             {services.map((service) => {
               const Icon = service.icon
               const selectedIndex = selectedOptions[service.id] ?? 0
@@ -106,39 +122,39 @@ export default function ShortFormVideosPage() {
               return (
                 <div
                   key={service.id}
-                  className="bg-white border border-border rounded-xl p-5 flex flex-col hover:border-primary/50 hover:shadow-sm transition-all"
+                  className="bg-white border border-[#e5e7eb] rounded-lg p-5 flex flex-col hover:border-[#3b82f6] hover:shadow-md transition-all"
                 >
                   {/* Header with icon and category badge */}
-                  <div className="flex items-start justify-between mb-4">
-                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
-                      <Icon className="w-5 h-5 text-muted-foreground" />
+                  <div className="flex items-start justify-between mb-3">
+                    <div className="w-9 h-9 rounded-md bg-[#f3f4f6] flex items-center justify-center">
+                      <Icon className="w-4 h-4 text-[#6b7280]" />
                     </div>
-                    <span className="text-[10px] font-medium uppercase tracking-wide px-2 py-1 rounded bg-muted text-muted-foreground">
+                    <span className="text-[10px] font-semibold uppercase tracking-wider px-2 py-0.5 rounded bg-[#f3f4f6] text-[#6b7280]">
                       {service.category}
                     </span>
                   </div>
 
                   {/* Title and description */}
-                  <h3 className="text-base font-semibold text-foreground mb-1">
+                  <h3 className="text-sm font-semibold text-[#1a1a2e] mb-1">
                     {service.title}
                   </h3>
-                  <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                  <p className="text-xs text-[#6b7280] mb-4 leading-relaxed line-clamp-2">
                     {service.description}
                   </p>
 
                   {/* Price */}
-                  <div className="mb-1">
-                    <span className="text-2xl font-bold text-foreground">${price}</span>
+                  <div className="mb-0.5">
+                    <span className="text-xl font-bold text-[#1a1a2e]">${price}</span>
                   </div>
-                  <p className="text-xs text-muted-foreground mb-4">Pricing from</p>
+                  <p className="text-[11px] text-[#9ca3af] mb-3">Pricing from</p>
 
                   {/* Quantity Selector */}
-                  <div className="mb-4">
+                  <div className="mb-3">
                     <Select
                       value={String(selectedIndex)}
                       onValueChange={(value) => handleOptionChange(service.id, Number(value))}
                     >
-                      <SelectTrigger className="w-full h-9 text-xs bg-muted/50 border-border">
+                      <SelectTrigger className="w-full h-8 text-xs bg-[#f9fafb] border-[#e5e7eb] text-[#374151]">
                         <SelectValue>
                           {selectedOption?.label} - ${selectedOption?.price}/mo
                         </SelectValue>
@@ -156,21 +172,21 @@ export default function ShortFormVideosPage() {
                   {/* Checkout Button */}
                   <Link
                     href={`/checkout?plan=${encodeURIComponent(service.title)}&price=${price}&qty=${selectedOption?.label}`}
-                    className="block mb-3"
+                    className="block mb-2"
                   >
-                    <Button className="w-full h-9 text-sm bg-foreground text-background hover:bg-foreground/90">
+                    <Button className="w-full h-8 text-xs font-medium bg-[#3b82f6] text-white hover:bg-[#2563eb]">
                       Checkout
-                      <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                      <ArrowRight className="w-3 h-3 ml-1" />
                     </Button>
                   </Link>
 
                   {/* Learn More Link */}
                   <Link
                     href={service.href}
-                    className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                    className="flex items-center justify-center gap-1 text-[11px] text-[#6b7280] hover:text-[#3b82f6] transition-colors"
                   >
                     Learn more
-                    <Info className="w-3.5 h-3.5" />
+                    <Info className="w-3 h-3" />
                   </Link>
                 </div>
               )
