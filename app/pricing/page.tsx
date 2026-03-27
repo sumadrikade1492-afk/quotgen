@@ -6,7 +6,7 @@ import { Footer } from "@/components/footer"
 import { PricingHero } from "@/components/pricing/pricing-hero"
 import { ServiceTabs } from "@/components/pricing/service-tabs"
 import { PricingPackages } from "@/components/pricing/pricing-packages"
-import { ServiceConfigurators } from "@/components/pricing/service-configurators"
+import { ServiceCardsGrid } from "@/components/pricing/service-cards-grid"
 
 export default function PricingPage() {
   const [activeTab, setActiveTab] = useState("posts")
@@ -22,7 +22,7 @@ export default function PricingPage() {
           navigateOnClick={false}
         />
         <PricingPackages />
-        <ServiceConfigurators activeTab={activeTab} />
+        <ServiceCardsGrid activeTab={activeTab} />
       </div>
       <Footer />
     </main>
