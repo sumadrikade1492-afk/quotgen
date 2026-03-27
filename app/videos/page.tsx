@@ -1,23 +1,13 @@
 'use client'
 
-import { useState, useEffect } from 'react'
-import Image from 'next/image'
+import { useState } from 'react'
 import Link from 'next/link'
 import { Header } from '@/components/header'
 import { Footer } from '@/components/footer'
 import { Breadcrumb } from '@/components/breadcrumb'
-import { VideoPlayerModal } from '@/components/videos/video-player-modal'
 import { ServiceTabs } from '@/components/pricing/service-tabs'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, BadgeCheck, CalendarCheck, CopyCheck, FileSearch, Paintbrush, Phone, Play } from 'lucide-react'
-
-interface Video {
-  id: string
-  title: string
-  description: string
-  videoUrl: string
-  thumbnailUrl: string
-}
+import { ArrowRight, BadgeCheck, CalendarCheck, CopyCheck, FileSearch, Paintbrush, Phone } from 'lucide-react'
 
 const VIDEO_QUANTITY_OPTIONS = [4, 8, 12, 16, 20]
 const VIDEO_PRICE_PER_UNIT = 37.25
@@ -26,39 +16,9 @@ function calculateVideoPrice(quantity: number) {
   return Math.round(VIDEO_PRICE_PER_UNIT * quantity)
 }
 
-// Default videos from service configurators
-const DEFAULT_VIDEOS: Video[] = [
-  {
-    id: '1',
-    title: 'Buyer Pain - Losing Homes',
-    description: 'Real estate marketing video highlighting buyer challenges in competitive market',
-    videoUrl: 'https://hebbkx1anhila5yf.public.blob.vercel-storage.com/Untitled%20design%20%283%29-vN2BX44KvRUsPCEdSmQsnPPHksCeK2.mp4',
-    thumbnailUrl: '/thumbnails/buyer-pain-losing-homes.jpg',
-  },
- 
- 
-]
-
 export default function ShortFormVideosPage() {
-  const [videos, setVideos] = useState<Video[]>(DEFAULT_VIDEOS)
-  const [selectedVideoId, setSelectedVideoId] = useState<string | null>(null)
-  const [isUploading, setIsUploading] = useState(false)
   const [quantityIndex, setQuantityIndex] = useState(0)
 
-  // Load videos from localStorage on mount
-  useEffect(() => {
-    const savedVideos = localStorage.getItem('shortFormVideos')
-    if (savedVideos) {
-      try {
-        const parsed = JSON.parse(savedVideos)
-        setVideos([...DEFAULT_VIDEOS, ...parsed])
-      } catch (error) {
-        console.error('[v0] Error parsing saved videos:', error)
-      }
-    }
-  }, [])
-
-  const selectedVideo = videos.find((v) => v.id === selectedVideoId)
   const quantity = VIDEO_QUANTITY_OPTIONS[quantityIndex] ?? VIDEO_QUANTITY_OPTIONS[0]
   const price = calculateVideoPrice(quantity)
 
@@ -215,62 +175,7 @@ export default function ShortFormVideosPage() {
         </div>
       </section>
 
-      {/* Video Gallery Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <h2 className="text-2xl font-bold text-[#0B2A4A] mb-8">Video Gallery</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            {videos.map((video) => (
-              <div
-                key={video.id}
-                onClick={() => setSelectedVideoId(video.id)}
-                className="group relative bg-white border border-blue-100 rounded-xl overflow-hidden hover:border-[#1E5AA8] transition-all hover:shadow-lg cursor-pointer animate-in fade-in zoom-in duration-500"
-              >
-                {/* Video Thumbnail */}
-                <div className="relative aspect-video bg-[#F5F9FF] overflow-hidden">
-                  <Image
-                    src={video.thumbnailUrl}
-                    alt={video.title}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-300"
-                  />
-                  {/* Overlay */}
-                  <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-colors" />
-                </div>
 
-                {/* Play Button */}
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <div className="w-16 h-16 rounded-full bg-[#1E5AA8] flex items-center justify-center shadow-lg group-hover:scale-110 transition-transform duration-300">
-                    <Play className="w-7 h-7 text-white fill-white ml-1" />
-                  </div>
-                </div>
-
-                {/* Video Info */}
-                <div className="absolute bottom-0 left-0 right-0 bg-gradient-to-t from-black/80 to-transparent p-4">
-                  <h3 className="text-white font-semibold text-sm mb-1 line-clamp-1">{video.title}</h3>
-                  <p className="text-white/80 text-xs line-clamp-2">{video.description}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-
-          {videos.length === 0 && (
-            <div className="text-center py-16">
-              <p className="text-[#6B7280] text-lg">No videos uploaded yet. Upload your first video to get started!</p>
-            </div>
-          )}
-        </div>
-      </section>
-
-      {/* Video Player Modal */}
-      {selectedVideo && (
-        <VideoPlayerModal
-          isOpen={selectedVideoId !== null}
-          onClose={() => setSelectedVideoId(null)}
-          videoUrl={selectedVideo.videoUrl}
-          title={selectedVideo.title}
-        />
-      )}
 
       <Footer />
     </main>
