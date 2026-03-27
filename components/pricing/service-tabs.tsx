@@ -1,6 +1,5 @@
 "use client"
 
-import { useEffect, useState } from "react"
 import Link from "next/link"
 import { usePathname } from "next/navigation"
 import {
@@ -16,9 +15,9 @@ import {
   TrendingUp,
 } from "lucide-react"
 
-const services = [
+export const services = [
   { id: "posts", label: "Posts", icon: ImageIcon, link: "/services/posts" },
-  { id: "videos", label: "Videos", icon: Video, link: "/videos" },
+  { id: "videos", label: "Videos", icon: Video, link: "/services/videos" },
   { id: "static-ads", label: "Static Ads", icon: LayoutGrid, link: "/static-ads" },
   { id: "video-ads", label: "Video Ads", icon: Film, link: "/video-ads" },
   { id: "emails", label: "Emails", icon: Mail, link: "/email-design" },
@@ -29,17 +28,23 @@ const services = [
   { id: "instagram-growth", label: "Instagram Growth", icon: TrendingUp, link: "/instagram-growth" },
 ]
 
-export function ServiceTabs() {
-  const pathname = usePathname()
-  const [activeService, setActiveService] = useState(() => {
-    const matched = services.find((service) => service.link === pathname)
-    return matched?.id ?? "posts"
-  })
+interface ServiceTabsProps {
+  activeTab?: string
+  onTabChange?: (tabId: string) => void
+  navigateOnClick?: boolean
+}
 
-  useEffect(() => {
-    const matched = services.find((service) => service.link === pathname)
-    setActiveService(matched?.id ?? "posts")
-  }, [pathname])
+export function ServiceTabs({ activeTab, onTabChange, navigateOnClick = false }: ServiceTabsProps) {
+  const pathname = usePathname()
+  
+  // If no activeTab prop is provided, determine from pathname
+  const currentActiveTab = activeTab || services.find((service) => service.link === pathname)?.id || "posts"
+
+  const handleTabClick = (serviceId: string) => {
+    if (onTabChange) {
+      onTabChange(serviceId)
+    }
+  }
 
   return (
     <section className="pb-8 px-4 sm:px-6 lg:px-8">
@@ -47,24 +52,44 @@ export function ServiceTabs() {
         <div className="flex flex-wrap justify-center gap-2">
           {services.map((service) => {
             const Icon = service.icon
-            const isActive = activeService === service.id
+            const isActive = currentActiveTab === service.id
+            
+            if (navigateOnClick) {
+              return (
+                <Link key={service.id} href={service.link}>
+                  <button
+                    className={`
+                      flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all
+                      ${
+                        isActive
+                          ? "bg-primary text-primary-foreground"
+                          : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
+                      }
+                    `}
+                  >
+                    <Icon className="w-4 h-4" />
+                    <span>{service.label}</span>
+                  </button>
+                </Link>
+              )
+            }
+            
             return (
-              <Link key={service.id} href={service.link}>
-                <button
-                  onClick={() => setActiveService(service.id)}
-                  className={`
-                    flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all
-                    ${
-                      isActive
-                        ? "bg-primary text-primary-foreground"
-                        : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
-                    }
-                  `}
-                >
-                  <Icon className="w-4 h-4" />
-                  <span>{service.label}</span>
-                </button>
-              </Link>
+              <button
+                key={service.id}
+                onClick={() => handleTabClick(service.id)}
+                className={`
+                  flex items-center gap-2 px-4 py-2.5 rounded-full text-sm font-medium transition-all
+                  ${
+                    isActive
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-card border border-border text-muted-foreground hover:text-foreground hover:border-primary/50"
+                  }
+                `}
+              >
+                <Icon className="w-4 h-4" />
+                <span>{service.label}</span>
+              </button>
             )
           })}
         </div>

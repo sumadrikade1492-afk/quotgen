@@ -28,6 +28,8 @@ import {
   Search,
   TrendingUp,
   Check,
+  FileText,
+  Link2,
 } from "lucide-react"
 
 interface ServiceConfig {
@@ -44,6 +46,7 @@ interface ServiceConfig {
   platforms?: { icon: React.ReactNode; name: string }[]
   videoUrls?: string[]
   link?: string
+  category: string // maps to service tab id
 }
 
 const serviceConfigs: ServiceConfig[] = [
@@ -75,7 +78,24 @@ const serviceConfigs: ServiceConfig[] = [
       { icon: <Linkedin className="w-5 h-5" />, name: "LinkedIn" },
       { icon: <X className="w-5 h-5" />, name: "X" },
     ],
-    link: "/videos"
+    category: "posts"
+  },
+  {
+    id: "carousel-posts",
+    title: "Carousel Posts",
+    icon: <ImageIcon className="w-6 h-6" />,
+    description: "Multi-slide carousel posts for social media engagement.",
+    baseQuantity: 1,
+    basePrice: 55,
+    pricePerUnit: 55,
+    quantityOptions: [1, 2, 3, 4, 5],
+    features: [
+      { icon: <Check className="w-4 h-4" />, text: "Custom carousel design" },
+      { icon: <Check className="w-4 h-4" />, text: "Multiple slide layouts" },
+      { icon: <Check className="w-4 h-4" />, text: "Optimized captions" },
+      { icon: <Check className="w-4 h-4" />, text: "Brand aligned visuals" }
+    ],
+    category: "posts"
   },
   {
     id: "videos",
@@ -99,9 +119,25 @@ const serviceConfigs: ServiceConfig[] = [
       { icon: <Instagram className="w-5 h-5" />, name: "Instagram" },
       { icon: <Youtube className="w-5 h-5" />, name: "YouTube" },
     ],
-    link: "/videos"
+    category: "videos"
   },
-  
+  {
+    id: "ugc-videos",
+    title: "UGC Videos",
+    icon: <Video className="w-6 h-6" />,
+    description: "User generated style videos optimized for social media ads.",
+    baseQuantity: 3,
+    basePrice: 649,
+    pricePerUnit: 216.33,
+    quantityOptions: [3, 6, 9],
+    features: [
+      { icon: <Check className="w-4 h-4" />, text: "3 UGC style videos" },
+      { icon: <Check className="w-4 h-4" />, text: "Short form content" },
+      { icon: <Check className="w-4 h-4" />, text: "Optimized for social media ads" },
+      { icon: <Check className="w-4 h-4" />, text: "Edited and ready to publish" }
+    ],
+    category: "videos"
+  },
   {
     id: "static-ads",
     title: "Static Ads",
@@ -119,7 +155,7 @@ const serviceConfigs: ServiceConfig[] = [
       { icon: <BadgeCheck className="w-4 h-4" />, text: "Monthly delivery of fresh ad concepts" },
       { icon: <CopyCheck className="w-4 h-4" />, text: "Ready-to-launch formats for paid social" },
     ],
-    link: "/static-ads"
+    category: "static-ads"
   },
   {
     id: "video-ads",
@@ -138,7 +174,7 @@ const serviceConfigs: ServiceConfig[] = [
       { icon: <BadgeCheck className="w-4 h-4" />, text: "Copywriting included" },
       { icon: <CopyCheck className="w-4 h-4" />, text: "Platform optimized" },
     ],
-    link: "/video-ads"
+    category: "video-ads"
   },
   {
     id: "emails",
@@ -156,7 +192,58 @@ const serviceConfigs: ServiceConfig[] = [
       { icon: <CalendarCheck className="w-4 h-4" />, text: "Responsive layouts" },
       { icon: <BadgeCheck className="w-4 h-4" />, text: "Ready to deploy" },
     ],
-    link: "/email-design"
+    category: "emails"
+  },
+  {
+    id: "seo-blog-posts",
+    title: "SEO Blog Posts",
+    icon: <FileText className="w-6 h-6" />,
+    baseQuantity: 2,
+    basePrice: 149,
+    pricePerUnit: 74.5,
+    quantityOptions: [2, 4, 6, 8],
+    description: "SEO optimized blog content to increase search visibility.",
+    features: [
+      { icon: <FileSearch className="w-4 h-4" />, text: "Keyword research" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "2 SEO optimized blog posts" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "On-page SEO optimization" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "Content formatting" }
+    ],
+    category: "blogs"
+  },
+  {
+    id: "seo-backlinks",
+    title: "SEO Backlinks",
+    icon: <Link2 className="w-6 h-6" />,
+    description: "High quality backlinks to improve search engine rankings.",
+    baseQuantity: 3,
+    basePrice: 299,
+    pricePerUnit: 99.67,
+    quantityOptions: [3, 6, 9, 12],
+    features: [
+      { icon: <FileSearch className="w-4 h-4" />, text: "3 high quality backlinks" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "DA 20–65 websites" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "White-hat link building" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "SEO performance improvement" }
+    ],
+    category: "backlinks"
+  },
+  {
+    id: "managed-seo",
+    title: "Managed SEO",
+    icon: <Search className="w-6 h-6" />,
+    description: "Full SEO management to improve website ranking and organic traffic.",
+    baseQuantity: 1,
+    basePrice: 549,
+    pricePerUnit: 549,
+    quantityOptions: [1, 2, 3, 4, 5],
+    features: [
+      { icon: <FileSearch className="w-4 h-4" />, text: "Keyword research & strategy" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "On-page SEO optimization" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "Technical SEO improvements" },
+      { icon: <FileSearch className="w-4 h-4" />, text: "Monthly SEO performance reports" }
+    ],
+    category: "backlinks"
   },
   {
     id: "meta-ads",
@@ -174,7 +261,7 @@ const serviceConfigs: ServiceConfig[] = [
       { icon: <BadgeCheck className="w-4 h-4" />, text: "Performance reporting" },
       { icon: <CopyCheck className="w-4 h-4" />, text: "Ad creation & testing" },
     ],
-    link: "/meta-ads"
+    category: "meta-ads"
   },
   {
     id: "google-ads",
@@ -192,85 +279,24 @@ const serviceConfigs: ServiceConfig[] = [
       { icon: <BadgeCheck className="w-4 h-4" />, text: "Performance tracking" },
       { icon: <CopyCheck className="w-4 h-4" />, text: "Monthly optimization" },
     ],
-    link: "/google-ads"
+    category: "google-ads"
   },
   {
-    id: "seo-blog-posts",
-    title: "SEO Blog Posts",
-    icon: <ImageIcon className="w-6 h-6" />,
-    baseQuantity: 2,
-    basePrice: 149,
-    pricePerUnit: 74.5,
-    quantityOptions: [2, 4, 6, 8],
-    description: "SEO optimized blog content to increase search visibility.",
-    features: [
-      { icon: <FileSearch className="w-4 h-4" />, text: "Keyword research" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "2 SEO optimized blog posts" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "On-page SEO optimization" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "Content formatting" }
-    ]
-  },
-  {
-    id: "seo-backlinks",
-    title: "SEO Backlinks",
-    description: "High quality backlinks to improve search engine rankings.",
-    baseQuantity: 3,
-    basePrice: 299,
-    pricePerUnit: 99.67,
-    quantityOptions: [3, 6, 9, 12],
-    features: [
-      { icon: <FileSearch className="w-4 h-4" />, text: "3 high quality backlinks" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "DA 20–65 websites" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "White-hat link building" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "SEO performance improvement" }
-    ]
-  },
-  {
-    id: "managed-seo",
-    title: "Managed SEO",
-    description: "Full SEO management to improve website ranking and organic traffic.",
+    id: "instagram-growth",
+    title: "Instagram Growth",
+    icon: <TrendingUp className="w-6 h-6" />,
+    description: "Organic Instagram growth through strategic engagement and content optimization.",
     baseQuantity: 1,
-    basePrice: 549,
-    pricePerUnit: 549,
-    quantityOptions: [1, 2, 3, 4, 5],
+    basePrice: 199,
+    pricePerUnit: 199,
+    quantityOptions: [1, 2, 3],
     features: [
-      { icon: <FileSearch className="w-4 h-4" />, text: "Keyword research & strategy" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "On-page SEO optimization" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "Technical SEO improvements" },
-      { icon: <FileSearch className="w-4 h-4" />, text: "Monthly SEO performance reports" }
-    ]
-  },
-  {
-    id: "carousel-posts",
-    title: "Carousel Posts",
-    icon: <ImageIcon className="w-6 h-6" />,
-    description: "Multi-slide carousel posts for social media engagement.",
-    baseQuantity: 1,
-    basePrice: 55,
-    pricePerUnit: 55,
-    quantityOptions: [1, 2, 3, 4, 5],
-    features: [
-      { icon: <Check className="w-4 h-4" />, text: "Custom carousel design" },
-      { icon: <Check className="w-4 h-4" />, text: "Multiple slide layouts" },
-      { icon: <Check className="w-4 h-4" />, text: "Optimized captions" },
-      { icon: <Check className="w-4 h-4" />, text: "Brand aligned visuals" }
-    ]
-  },
-  {
-    id: "ugc-videos",
-    title: "UGC Videos",
-    icon: <Video className="w-6 h-6" />,
-    description: "User generated style videos optimized for social media ads.",
-    baseQuantity: 3,
-    basePrice: 649,
-    pricePerUnit: 216.33,
-    quantityOptions: [3, 6, 9],
-    features: [
-      { icon: <Check className="w-4 h-4" />, text: "3 UGC style videos" },
-      { icon: <Check className="w-4 h-4" />, text: "Short form content" },
-      { icon: <Check className="w-4 h-4" />, text: "Optimized for social media ads" },
-      { icon: <Check className="w-4 h-4" />, text: "Edited and ready to publish" }
-    ]
+      { icon: <Check className="w-4 h-4" />, text: "Organic follower growth" },
+      { icon: <Check className="w-4 h-4" />, text: "Engagement optimization" },
+      { icon: <Check className="w-4 h-4" />, text: "Hashtag strategy" },
+      { icon: <Check className="w-4 h-4" />, text: "Content scheduling" }
+    ],
+    category: "instagram-growth"
   },
   {
     id: "instagram-stories",
@@ -286,23 +312,8 @@ const serviceConfigs: ServiceConfig[] = [
       { icon: <Check className="w-4 h-4" />, text: "Branded visuals" },
       { icon: <Check className="w-4 h-4" />, text: "Optimized captions" },
       { icon: <Check className="w-4 h-4" />, text: "Ready for publishing" }
-    ]
-  },
-  {
-    id: "additional-channel",
-    title: "Additional Social Channel",
-    icon: <ImageIcon className="w-6 h-6" />,
-    baseQuantity: 1,
-    quantityOptions: [1, 2],
-    basePrice: 60,
-    pricePerUnit: 60,
-    description: "Add management for an additional social media platform.",
-    features: [
-      { icon: <Check className="w-4 h-4" />, text: "Additional platform management" },
-      { icon: <Check className="w-4 h-4" />, text: "Content posting" },
-      { icon: <Check className="w-4 h-4" />, text: "Caption optimization" },
-      { icon: <Check className="w-4 h-4" />, text: "Performance tracking" }
-    ]
+    ],
+    category: "instagram-growth"
   },
 ]
 
@@ -477,15 +488,27 @@ function ServiceCard({ config }: { config: ServiceConfig }) {
   )
 }
 
-export function ServiceConfigurators() {
+interface ServiceConfiguratorsProps {
+  activeTab?: string
+}
+
+export function ServiceConfigurators({ activeTab = "posts" }: ServiceConfiguratorsProps) {
+  const filteredConfigs = serviceConfigs.filter(config => config.category === activeTab)
+
   return (
     <section className="py-12 px-4 sm:px-6 lg:px-8 bg-secondary/20">
       <div className="max-w-6xl mx-auto">
-        <div className="grid md:grid-cols-2 gap-8">
-          {serviceConfigs.map((config) => (
-            <ServiceCard key={config.id} config={config} />
-          ))}
-        </div>
+        {filteredConfigs.length > 0 ? (
+          <div className="grid md:grid-cols-2 gap-8">
+            {filteredConfigs.map((config) => (
+              <ServiceCard key={config.id} config={config} />
+            ))}
+          </div>
+        ) : (
+          <div className="text-center py-16">
+            <p className="text-muted-foreground text-lg">Coming soon! We&apos;re working on adding more services in this category.</p>
+          </div>
+        )}
       </div>
     </section>
   )
