@@ -4,7 +4,6 @@ import { useState } from "react"
 import Image from "next/image"
 import { FlyerModal } from "@/components/flyer-modal"
 import { CategorySlider } from "@/components/category-slider"
-import { ServiceCategoryFilter } from "@/components/service-category-filter"
 
 const portfolioExamples = [
   {
@@ -149,7 +148,6 @@ const businessCategories = [
 
 export function ExamplesSection() {
   const [activeBusinessCategory, setActiveBusinessCategory] = useState("All")
-  const [activeServiceCategory, setActiveServiceCategory] = useState("posts")
   const [selectedFlyerId, setSelectedFlyerId] = useState<number | null>(null)
 
   const filteredExamples = portfolioExamples.filter((ex) => {
@@ -171,14 +169,6 @@ export function ExamplesSection() {
           <p className="text-[#6B7280] max-w-2xl mx-auto text-lg">
             Explore our portfolio of professional social media posts, marketing campaigns, and digital content created for leading brands and businesses across various industries.
           </p>
-        </div>
-
-        {/* Service Category Filter */}
-        <div className="mb-12">
-          <ServiceCategoryFilter
-            activeCategory={activeServiceCategory}
-            onCategoryChange={setActiveServiceCategory}
-          />
         </div>
 
         {/* Business Category Slider */}
