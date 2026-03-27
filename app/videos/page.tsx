@@ -7,23 +7,62 @@ import { Footer } from '@/components/footer'
 import { Breadcrumb } from '@/components/breadcrumb'
 import { ServiceTabs } from '@/components/pricing/service-tabs'
 import { Button } from '@/components/ui/button'
-import { ArrowRight, BadgeCheck, CalendarCheck, CopyCheck, FileSearch, Paintbrush, Phone } from 'lucide-react'
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '@/components/ui/select'
+import { ArrowRight, Video, Users, Info } from 'lucide-react'
 
-const VIDEO_QUANTITY_OPTIONS = [4, 8, 12, 16, 20]
-const VIDEO_PRICE_PER_UNIT = 37.25
-
-function calculateVideoPrice(quantity: number) {
-  return Math.round(VIDEO_PRICE_PER_UNIT * quantity)
-}
+const services = [
+  {
+    id: 'short-form',
+    title: 'Short-Form Videos',
+    description: 'Simple 20-60 second videos for TikTok, Reels, and Shorts.',
+    icon: Video,
+    category: 'SOCIAL MEDIA',
+    basePrice: 199,
+    options: [
+      { label: '5 videos', price: 199 },
+      { label: '10 videos', price: 349 },
+      { label: '15 videos', price: 499 },
+      { label: '20 videos', price: 649 },
+    ],
+    href: '/services/videos/short-form-videos',
+  },
+  {
+    id: 'ugc',
+    title: 'UGC Videos',
+    description: 'Engaging video content created by real users for authentic brand promotion.',
+    icon: Users,
+    category: 'PAID SOCIAL',
+    basePrice: 599,
+    options: [
+      { label: '1 video', price: 599 },
+      { label: '2 videos', price: 1099 },
+      { label: '3 videos', price: 1499 },
+    ],
+    href: '/services/videos/ugc-videos',
+  },
+]
 
 export default function ShortFormVideosPage() {
-  const [quantityIndex, setQuantityIndex] = useState(0)
+  const [selectedOptions, setSelectedOptions] = useState<Record<string, number>>({
+    'short-form': 0,
+    'ugc': 0,
+  })
 
-  const quantity = VIDEO_QUANTITY_OPTIONS[quantityIndex] ?? VIDEO_QUANTITY_OPTIONS[0]
-  const price = calculateVideoPrice(quantity)
+  const handleOptionChange = (serviceId: string, optionIndex: number) => {
+    setSelectedOptions((prev) => ({
+      ...prev,
+      [serviceId]: optionIndex,
+    }))
+  }
 
   return (
-    <main className="min-h-screen bg-white">
+    <main className="min-h-screen bg-background">
       <Header />
 
       {/* Breadcrumb */}
@@ -43,139 +82,102 @@ export default function ShortFormVideosPage() {
       <ServiceTabs />
 
       {/* Hero Section */}
-      <section className="pb-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#F5F9FF] to-white">
+      <section className="pb-12 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-[#F5F9FF] to-white">
         <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-4xl sm:text-5xl font-bold text-[#0B2A4A] mb-4">
+          <h1 className="text-3xl sm:text-4xl font-bold text-foreground mb-3">
             Short-Form Videos
           </h1>
-          <p className="text-lg text-[#6B7280] max-w-2xl mx-auto">
-            Professional short-form video content for TikTok, Instagram Reels, and YouTube Shorts
+          <p className="text-muted-foreground max-w-2xl mx-auto text-sm sm:text-base">
+            Get your creative &amp; marketing work done without the hassle of unreliable freelancers, costly agencies. Pay a fixed, monthly, and predictable rate, with no contracts or surprises.
           </p>
         </div>
       </section>
 
-      {/* Configurator Section */}
-      <section className="pb-16 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto">
-          <div className="grid lg:grid-cols-4 gap-8">
-            {/* Left */}
-            <div className="lg:col-span-3">
-              <div className="bg-white border border-blue-100 rounded-2xl overflow-hidden">
-                <div className="p-6 border-b border-blue-100">
-                  <div className="flex items-start justify-between gap-6 mb-4">
-                    <div className="min-w-0">
-                      <h2 className="text-xl font-bold text-[#0B2A4A]">Short-Form Videos</h2>
-                      <p className="text-sm text-[#6B7280]">{quantity} videos</p>
-                    </div>
+      {/* Services Grid */}
+      <section className="py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-5xl mx-auto">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+            {services.map((service) => {
+              const Icon = service.icon
+              const selectedIndex = selectedOptions[service.id] ?? 0
+              const selectedOption = service.options[selectedIndex]
+              const price = selectedOption?.price ?? service.basePrice
 
-                    <div className="text-right flex-shrink-0">
-                      <span className="text-2xl font-bold text-[#0B2A4A]">${price}</span>
-                      <span className="text-[#6B7280]">/mo</span>
+              return (
+                <div
+                  key={service.id}
+                  className="bg-white border border-border rounded-xl p-5 flex flex-col hover:border-primary/50 hover:shadow-sm transition-all"
+                >
+                  {/* Header with icon and category badge */}
+                  <div className="flex items-start justify-between mb-4">
+                    <div className="w-10 h-10 rounded-lg bg-muted flex items-center justify-center">
+                      <Icon className="w-5 h-5 text-muted-foreground" />
                     </div>
+                    <span className="text-[10px] font-medium uppercase tracking-wide px-2 py-1 rounded bg-muted text-muted-foreground">
+                      {service.category}
+                    </span>
                   </div>
 
-                  <p className="text-sm text-[#6B7280] mb-6">
-                    Engaging 15-60 second short-form videos for TikTok, Reels, and Shorts. Edited with premium stock
-                    footage or raw footage provided by client.
+                  {/* Title and description */}
+                  <h3 className="text-base font-semibold text-foreground mb-1">
+                    {service.title}
+                  </h3>
+                  <p className="text-xs text-muted-foreground mb-4 leading-relaxed">
+                    {service.description}
                   </p>
 
-                  <div className="mb-2 flex items-center justify-between text-sm">
-                    <p className="font-semibold text-[#0B2A4A]">Select monthly number of videos</p>
-                    <p className="text-[#6B7280]">{quantity}</p>
+                  {/* Price */}
+                  <div className="mb-1">
+                    <span className="text-2xl font-bold text-foreground">${price}</span>
+                  </div>
+                  <p className="text-xs text-muted-foreground mb-4">Pricing from</p>
+
+                  {/* Quantity Selector */}
+                  <div className="mb-4">
+                    <Select
+                      value={String(selectedIndex)}
+                      onValueChange={(value) => handleOptionChange(service.id, Number(value))}
+                    >
+                      <SelectTrigger className="w-full h-9 text-xs bg-muted/50 border-border">
+                        <SelectValue>
+                          {selectedOption?.label} - ${selectedOption?.price}/mo
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {service.options.map((option, index) => (
+                          <SelectItem key={index} value={String(index)} className="text-xs">
+                            {option.label} - ${option.price}/mo
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
                   </div>
 
-                  {/* Slider */}
-                  <div className="py-4">
-                    <input
-                      aria-label="Monthly number of videos"
-                      type="range"
-                      min={0}
-                      max={VIDEO_QUANTITY_OPTIONS.length - 1}
-                      step={1}
-                      value={quantityIndex}
-                      onChange={(e) => setQuantityIndex(Number(e.target.value))}
-                      className="w-full accent-[#1E5AA8]"
-                    />
-                    <div className="mt-2 flex justify-between text-xs text-[#6B7280]">
-                      {VIDEO_QUANTITY_OPTIONS.map((q) => (
-                        <span key={q} className={q === quantity ? 'text-[#0B2A4A] font-semibold' : undefined}>
-                          {q}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-
-                  <div
-                    className={`mt-4 p-3 rounded-lg text-sm ${
-                      price >= 149 ? 'bg-[#1E5AA8]/10 text-[#1E5AA8]' : 'bg-gray-50 text-[#6B7280]'
-                    }`}
+                  {/* Checkout Button */}
+                  <Link
+                    href={`/checkout?plan=${encodeURIComponent(service.title)}&price=${price}&qty=${selectedOption?.label}`}
+                    className="block mb-3"
                   >
-                    {price >= 149
-                      ? '✓ Your order qualifies for onboarding & monthly calls'
-                      : 'Orders over $149 qualify for onboarding & monthly calls'}
-                  </div>
+                    <Button className="w-full h-9 text-sm bg-foreground text-background hover:bg-foreground/90">
+                      Checkout
+                      <ArrowRight className="w-3.5 h-3.5 ml-1.5" />
+                    </Button>
+                  </Link>
+
+                  {/* Learn More Link */}
+                  <Link
+                    href={service.href}
+                    className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground hover:text-foreground transition-colors"
+                  >
+                    Learn more
+                    <Info className="w-3.5 h-3.5" />
+                  </Link>
                 </div>
-              </div>
-            </div>
-
-            {/* Right */}
-            <div className="lg:col-span-1">
-              <div className="bg-white border border-blue-100 rounded-2xl p-6 sticky top-28">
-                <h3 className="text-lg font-bold text-[#0B2A4A] mb-4">Short-Form Videos</h3>
-
-                <ul className="space-y-3 mb-6">
-                  <li className="flex items-center gap-3 text-sm text-[#6B7280]">
-                    <Paintbrush className="w-4 h-4 text-[#1E5AA8]" />
-                    Videos in your branding
-                  </li>
-                  <li className="flex items-center gap-3 text-sm text-[#6B7280]">
-                    <FileSearch className="w-4 h-4 text-[#1E5AA8]" />
-                    Captions & hashtags
-                  </li>
-                  <li className="flex items-center gap-3 text-sm text-[#6B7280]">
-                    <CalendarCheck className="w-4 h-4 text-[#1E5AA8]" />
-                    Posted for you (optional)
-                  </li>
-                  <li className="flex items-center gap-3 text-sm text-[#6B7280]">
-                    <Phone className="w-4 h-4 text-[#1E5AA8]" />
-                    Onboarding call (optional)
-                  </li>
-                  <li className="flex items-center gap-3 text-sm text-[#6B7280]">
-                    <BadgeCheck className="w-4 h-4 text-[#1E5AA8]" />
-                    1 social channel included
-                  </li>
-                  <li className="flex items-center gap-3 text-sm text-[#6B7280]">
-                    <CopyCheck className="w-4 h-4 text-[#1E5AA8]" />
-                    $10/mo each extra channel
-                  </li>
-                </ul>
-
-                <p className="text-xs text-[#6B7280] mb-6">
-                  <strong>Pricing is in USD.</strong> Your selected plan renews automatically each month but you can{' '}
-                  <strong>cancel anytime</strong>.
-                </p>
-
-                <Link href={`/checkout?plan=Short-Form%20Videos&price=${price}&qty=${quantity}`} className="block">
-                  <Button className="w-full bg-[#1E5AA8] text-white hover:bg-[#154080] group">
-                    Checkout
-                    <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-                  </Button>
-                </Link>
-
-                <button className="w-full mt-3 text-sm text-[#6B7280] hover:text-[#0B2A4A] underline">
-                  How the service works
-                </button>
-
-                <div className="mt-4 pt-4 border-t border-blue-100 text-center">
-                  <button className="text-sm text-[#1E5AA8] hover:underline">Schedule a demo</button>
-                </div>
-              </div>
-            </div>
+              )
+            })}
           </div>
         </div>
       </section>
-
-
 
       <Footer />
     </main>
